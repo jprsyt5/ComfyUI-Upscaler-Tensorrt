@@ -103,7 +103,7 @@ def download_file(url, save_path):
 def get_final_resolutions(width, height, resize_to):
     final_width = None
     final_height = None
-    aspect_ratio = float(width/height)
+    aspect_ratio = float(width / height)
 
     match resize_to:
         case "HD":
@@ -119,19 +119,23 @@ def get_final_resolutions(width, height, resize_to):
             final_width = 3840
             final_height = 2160
         case "none":
-            final_width = width*4
-            final_height = height*4
+            final_width = width * 4
+            final_height = height * 4
+        case "1x":  # 👈 Added
+            final_width = width
+            final_height = height
         case "2x":
-            final_width = width*2
-            final_height = height*2
+            final_width = width * 2
+            final_height = height * 2
         case "3x":
-            final_width = width*3
-            final_height = height*3
+            final_width = width * 3
+            final_height = height * 3
 
     if aspect_ratio == 1.0:
         final_width = final_height
 
-    if aspect_ratio < 1.0 and resize_to not in ("none", "2x", "3x"):
+    # 👇 exclude 1x from portrait-flip condition
+    if aspect_ratio < 1.0 and resize_to not in ("none", "1x", "2x", "3x"):
         temp = final_width
         final_width = final_height
         final_height = temp
